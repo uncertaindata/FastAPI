@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 
 app = FastAPI()
 items = []
@@ -12,6 +12,9 @@ def create_item(item : str):
     return items
 
 
-@app.get('/items/{item_id}')
+@app.get('/item_list/{item_id}')
 def get_item(item_id : int):
-    return items[item_id]
+    if item_id < len(items):
+        return items[item_id]
+    else:
+        raise HTTPException(status_code = 404,detail = "Item Index Not Allowed")
